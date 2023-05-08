@@ -1,21 +1,46 @@
+import { convertNodeToScrapboxText } from './convertElementToScrapbox';
+
 (async function () {
   // replace your_user_name to your Scrapbox user name
   const userName = 'your_user_name';
+  const chatGPTName = 'ChatGPT';
 
-  function getMessageContents(body: HTMLElement): HTMLElement[] {
-    // TODO: implement
-    const messageContents = Array.from(
-      body.querySelectorAll('.message-content')
-    );
-    return messageContents;
+  function getMessageElements(page: Element): Element[] {
+    const messageElements = page.querySelectorAll('div.text-base');
+    return Array.from(messageElements);
   }
 
-  function parseHTML(messageContents: HTMLElement[]): string[] {
-    // TODO: implement
+  function convertToScrapbox(messageElements: Element[]): string {
+    const scrapboxTexts = messageElements.map((messageElement) => {
+      let scrapboxText = '';
+
+      if (isUserMessage(messageElement)) {
+        scrapboxText += `[{userName}.icon]`;
+      } else {
+        scrapboxText += `[{chatGPTName}.icon]`;
+      }
+
+      const messageContentElement = messageElement.querySelector(
+        '.text-base > div:nth-child(2)'
+      );
+
+      if (!messageContentElement) {
+        return '';
+      }
+
+      scrapboxText += convertNodeToScrapboxText(messageContentElement, 1);
+      return scrapboxText;
+    });
+
+    return scrapboxTexts.join('\n');
   }
 
-  function convertToScrapbox(input): string {
-    // TODO: implement
+  function isUserMessage(messageElement: Element): boolean {
+    const userIconElement = messageElement.querySelector('img[alt="User"]');
+    if (!userIconElement) {
+      return false;
+    }
+    return true;
   }
 
   async function copyToClipboard(text: string): Promise<void> {
@@ -26,9 +51,8 @@
     }
   }
 
-  const messageContents = getMessageContents(document.body);
-  const parseResult = parseHTML(messageContents);
-  const scrapboxText = convertToScrapbox(parseResult);
+  const messageElements = getMessageElements(document.body);
+  const scrapboxText = convertToScrapbox(messageElements);
   await copyToClipboard(scrapboxText);
 
   alert('Copied to clipboard!');

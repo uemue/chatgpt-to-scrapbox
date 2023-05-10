@@ -1,4 +1,4 @@
-import { convertNodeToScrapboxText } from './convertElementToScrapbox';
+import { convertNodeToScrapboxText } from './convertNodeToScrapboxText';
 
 (async function () {
   // replace your_user_name to your Scrapbox user name
@@ -28,7 +28,7 @@ import { convertNodeToScrapboxText } from './convertElementToScrapbox';
         return '';
       }
 
-      scrapboxText += convertNodeToScrapboxText(messageContentElement, 1);
+      scrapboxText += convertNodeToScrapboxText(messageContentElement, ' ');
       return scrapboxText;
     });
 

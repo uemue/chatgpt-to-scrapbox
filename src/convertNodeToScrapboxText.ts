@@ -1,8 +1,7 @@
 // convert a element to a Scrapbox text. This function walks through the element and its children recursively.
 export function convertNodeToScrapboxText(node: Node, indent: string): string {
-  let output = '';
   if (node.nodeType === Node.TEXT_NODE) {
-    return node.textContent ?? '';
+    return node.textContent?.trim() || '';
   } else if (node.nodeType !== Node.ELEMENT_NODE) {
     return '';
   }
@@ -15,99 +14,105 @@ export function convertNodeToScrapboxText(node: Node, indent: string): string {
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[****** ${childContent}]\n`;
+      return indent + `[****** ${childContent}]\n`;
     case 'H2':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[***** ${childContent}]\n`;
+      return indent + `[***** ${childContent}]\n`;
     case 'H3':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[**** ${childContent}]\n`;
+      return indent + `[**** ${childContent}]\n`;
     case 'H4':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[*** ${childContent}]\n`;
+      return indent + `[*** ${childContent}]\n`;
     case 'H5':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[** ${childContent}]\n`;
+      return indent + `[** ${childContent}]\n`;
     case 'H6':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `[* ${childContent}]\n`;
+      return indent + `[* ${childContent}]\n`;
     case 'P':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `${childContent}\n`;
+      return indent + `${childContent}\n`;
     case 'IMG':
-      return output + `[${element.getAttribute('src')}]\n`;
+      return `[${element.getAttribute('src')}]\n`;
     case 'UL':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent + ' ');
       }
-      return output + `${childContent}\n`;
+      return `${childContent}`;
     case 'LI':
       for (const child of Array.from(element.childNodes)) {
+        if (child.nodeName === 'UL' || child.nodeName === 'OL') {
+          childContent += '\n';
+        }
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + indent + `${childContent}\n`;
+      return indent + `${childContent.trimEnd()}\n`;
     case 'OL':
       let counter = 1;
       for (const child of Array.from(element.childNodes)) {
         if (child.nodeName === 'LI') {
-          childContent += `${indent}${counter}. ${convertNodeToScrapboxText(
-            child,
-            indent
-          )}\n`;
+          const childIndent = indent + ' ';
+          const item = convertNodeToScrapboxText(child, childIndent);
+          childContent += item.replace(
+            childIndent,
+            `${childIndent}${counter}. `
+          );
           counter++;
         }
       }
+      return `${childContent}`;
     case 'BLOCKQUOTE':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent + '>');
       }
-      return output + `${childContent}\n`;
+      return `${childContent}\n`;
     case 'CODE':
       //TODO: implement
       // インラインとブロックの両方があるな
-      return output;
+      return '';
     case 'PRE':
       //TODO: implement
-      return output;
+      return '';
     case 'BR':
-      return output + '\n';
+      return '\n';
     case 'TABLE':
       //TODO: implement
-      return output;
+      return '';
     case 'A':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + `[${childContent} ${element.getAttribute('href')}]`;
+      return `[${childContent} ${element.getAttribute('href')}]`;
     case 'STRONG':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + `[* ${childContent}]`;
+      return `[* ${childContent}]`;
     case 'EM':
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + `[/ ${childContent}]`;
+      return `[/ ${childContent}]`;
     case 'CODE':
       //TODO: implement
-      return output;
+      return '';
     default:
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child, indent);
       }
-      return output + `${childContent}`;
+      return `${childContent}`;
   }
 }

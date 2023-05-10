@@ -1,5 +1,7 @@
 # Bookmarklet: chatgpt-to-scrapbox
 
+This repository is under construction and does not work yet.
+
 Copy [ChatGPT](https://chat.openai.com/) conversation to clipboard in Scrapbox format.
 
 ## Build bookmarklet

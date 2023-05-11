@@ -137,4 +137,25 @@ describe('convertNodeToScrapboxText', () => {
       ' 1. item1\n 2. item2\n  1. nestedItem1\n  2. nestedItem2\n'
     );
   });
+
+  test('converts <blockquote> nodes', () => {
+    const node = document.createElement('blockquote');
+    node.appendChild(document.createTextNode('hello'));
+    expect(convertNodeToScrapboxText(node, '')).toBe('>hello\n');
+  });
+
+  test('converts <a> nodes', () => {
+    const node = document.createElement('a');
+    node.setAttribute('href', 'https://example.com');
+    node.appendChild(document.createTextNode('example'));
+    expect(convertNodeToScrapboxText(node, '')).toBe(
+      '[example https://example.com]'
+    );
+  });
+});
+
+test('converts <strong> nodes', () => {
+  const node = document.createElement('strong');
+  node.appendChild(document.createTextNode('hello'));
+  expect(convertNodeToScrapboxText(node, '')).toBe('[* hello]');
 });

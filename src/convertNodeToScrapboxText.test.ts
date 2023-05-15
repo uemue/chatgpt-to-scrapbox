@@ -139,8 +139,12 @@ describe('convertNodeToScrapboxText', () => {
   });
 
   test('converts <blockquote> nodes', () => {
-    const node = document.createElement('blockquote');
-    node.appendChild(document.createTextNode('hello'));
+    const node = document.createElement('div');
+    node.innerHTML = `
+      <blockquote>
+        <p>hello</p>
+      </blockquote>
+    `;
     expect(convertNodeToScrapboxText(node, '')).toBe('>hello\n');
   });
 

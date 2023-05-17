@@ -82,18 +82,23 @@ export function convertNodeToScrapboxText(node: Node): string {
       let lines = childContent.trimEnd().split("\n");
       const indentedLines = lines.map((line) => "> " + line);
       return `${indentedLines.join("\n")}\n`;
-    case "CODE":
-      //TODO: implement
-      // インラインとブロックの両方があるな
-      return "";
     case "PRE":
-      //TODO: implement
-      return "";
+      const lang =
+        element
+          .querySelector("pre > div:first-child span")
+          ?.textContent?.trim() || "";
+      const code = element.querySelector("code")?.textContent?.trim() || "";
+      return "code:" + lang + "\n" + code + "\n";
     case "BR":
       return "\n";
     case "TABLE":
       //TODO: implement
       return "";
+    case "CODE":
+      for (const child of Array.from(element.childNodes)) {
+        childContent += convertNodeToScrapboxText(child);
+      }
+      return `\`${childContent}\``;
     case "A":
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child);

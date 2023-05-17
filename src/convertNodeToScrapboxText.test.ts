@@ -148,6 +148,34 @@ describe("convertNodeToScrapboxText", () => {
     expect(convertNodeToScrapboxText(node)).toBe("> hello\n");
   });
 
+  test("converts <pre> nodes", () => {
+    const node = document.createElement("div");
+    node.innerHTML = `
+<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>typescript</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHello</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Hello, <span class="hljs-subst">\${name}</span>!\`</span>);
+}
+
+<span class="hljs-title function_">sayHello</span>(<span class="hljs-string">'World'</span>);
+</code></div></div></pre>
+    `;
+
+    const expected = `code:typescript
+function sayHello(name: string) {
+    console.log(\`Hello, \${name}!\`);
+}
+
+sayHello('World');
+`;
+
+    expect(convertNodeToScrapboxText(node)).toBe(expected);
+  });
+
+  test("converts <code> nodes", () => {
+    const node = document.createElement("code");
+    node.appendChild(document.createTextNode("hello"));
+    expect(convertNodeToScrapboxText(node)).toBe("`hello`");
+  });
+
   test("converts <a> nodes", () => {
     const node = document.createElement("a");
     node.setAttribute("href", "https://example.com");

@@ -69,8 +69,9 @@ export function convertNodeToScrapboxText(node: Node): string {
           const item = convertNodeToScrapboxText(child);
           const olLines = item.trimEnd().split("\n");
           const [head, ...tail] = olLines;
-          childContent += ` ${counter}. ${head}\n`;
-          childContent += tail.map((line) => " " + line).join("\n") + "\n";
+          const headText = ` ${counter}. ${head}`;
+          const tailText = tail.map((line) => " " + line);
+          childContent += [headText, ...tailText].join("\n") + "\n";
           counter++;
         }
       }

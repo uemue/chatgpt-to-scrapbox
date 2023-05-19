@@ -88,7 +88,11 @@ export function convertNodeToScrapboxText(node: Node): string {
           .querySelector("pre > div:first-child span")
           ?.textContent?.trim() || "";
       const code = element.querySelector("code")?.textContent?.trim() || "";
-      return "code:" + lang + "\n" + code + "\n";
+      const indentedCode = code
+        .split("\n")
+        .map((line) => " " + line)
+        .join("\n");
+      return "code:" + lang + "\n" + indentedCode + "\n";
     case "BR":
       return "\n";
     case "TABLE":
@@ -114,9 +118,6 @@ export function convertNodeToScrapboxText(node: Node): string {
         childContent += convertNodeToScrapboxText(child);
       }
       return `[/ ${childContent}]`;
-    case "CODE":
-      //TODO: implement
-      return "";
     default:
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child);

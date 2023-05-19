@@ -160,11 +160,11 @@ describe("convertNodeToScrapboxText", () => {
     `;
 
     const expected = `code:typescript
-function sayHello(name: string) {
-    console.log(\`Hello, \${name}!\`);
-}
-
-sayHello('World');
+ function sayHello(name: string) {
+     console.log(\`Hello, \${name}!\`);
+ }
+ 
+ sayHello('World');
 `;
 
     expect(convertNodeToScrapboxText(node)).toBe(expected);

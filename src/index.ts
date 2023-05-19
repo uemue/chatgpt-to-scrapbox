@@ -28,7 +28,7 @@ import { convertNodeToScrapboxText } from "./convertNodeToScrapboxText";
         return "";
       }
 
-      scrapboxText += convertNodeToScrapboxText(messageContentElement, " ");
+      scrapboxText += convertNodeToScrapboxText(messageContentElement);
       return scrapboxText;
     });
 

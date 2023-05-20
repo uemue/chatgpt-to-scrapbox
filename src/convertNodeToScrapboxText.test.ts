@@ -170,6 +170,30 @@ describe("convertNodeToScrapboxText", () => {
     expect(convertNodeToScrapboxText(node)).toBe(expected);
   });
 
+  test("converts <table> nodes", () => {
+    const node = document.createElement("div");
+    node.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>header1</th>
+            <th>header2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>cell1</td>
+            <td>cell2</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    expect(convertNodeToScrapboxText(node)).toBe(
+      "table:\n header1\theader2\n cell1\tcell2\n"
+    );
+  });
+
   test("converts <code> nodes", () => {
     const node = document.createElement("code");
     node.appendChild(document.createTextNode("hello"));

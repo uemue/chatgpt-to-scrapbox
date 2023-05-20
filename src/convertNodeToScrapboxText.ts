@@ -97,8 +97,14 @@ export function convertNodeToScrapboxText(node: Node): string {
     case "BR":
       return "\n";
     case "TABLE":
-      //TODO: implement
-      return "";
+      const rows = Array.from(element.querySelectorAll("tr"));
+      const tsvRows = rows.map((row) =>
+        Array.from(row.querySelectorAll("td, th"))
+          .map((cell) => cell.textContent?.trim() || "")
+          .join("\t")
+      );
+      const tableLines = tsvRows.map((line) => " " + line);
+      return "table:\n" + tableLines.join("\n") + "\n";
     case "CODE":
       for (const child of Array.from(element.childNodes)) {
         childContent += convertNodeToScrapboxText(child);

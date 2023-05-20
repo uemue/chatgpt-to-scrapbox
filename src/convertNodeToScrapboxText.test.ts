@@ -190,7 +190,7 @@ describe("convertNodeToScrapboxText", () => {
     `;
 
     expect(convertNodeToScrapboxText(node)).toBe(
-      "table:\n header1\theader2\n cell1\tcell2\n"
+      "table:table\n header1\theader2\n cell1\tcell2\n"
     );
   });
 

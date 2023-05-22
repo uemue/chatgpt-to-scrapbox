@@ -11,46 +11,30 @@ export function convertNodeToScrapboxText(node: Node): string {
 
   switch (element.tagName) {
     case "H1":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[****** ${childContent}]\n`;
     case "H2":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[***** ${childContent}]\n`;
     case "H3":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[**** ${childContent}]\n`;
     case "H4":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[*** ${childContent}]\n`;
     case "H5":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[** ${childContent}]\n`;
     case "H6":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[* ${childContent}]\n`;
     case "P":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `${childContent}\n`;
     case "IMG":
       return `[${element.getAttribute("src")}]\n`;
     case "UL":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       const ulLines = childContent.trimEnd().split("\n");
       const ulIndentedLines = ulLines.map((line) => " " + line);
       return `${ulIndentedLines.join("\n")}\n`;
@@ -77,9 +61,7 @@ export function convertNodeToScrapboxText(node: Node): string {
       }
       return `${childContent.trimEnd()}\n`;
     case "BLOCKQUOTE":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       let lines = childContent.trimEnd().split("\n");
       const indentedLines = lines.map((line) => "> " + line);
       return `${indentedLines.join("\n")}\n`;
@@ -106,29 +88,27 @@ export function convertNodeToScrapboxText(node: Node): string {
       const tableLines = tsvRows.map((line) => " " + line);
       return "table:table\n" + tableLines.join("\n") + "\n";
     case "CODE":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `\`${childContent}\``;
     case "A":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[${childContent} ${element.getAttribute("href")}]`;
     case "STRONG":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[* ${childContent}]`;
     case "EM":
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `[/ ${childContent}]`;
     default:
-      for (const child of Array.from(element.childNodes)) {
-        childContent += convertNodeToScrapboxText(child);
-      }
+      childContent = processChildren(element);
       return `${childContent}`;
   }
+}
+
+function processChildren(element: Element): string {
+  let childContent = "";
+  for (const child of Array.from(element.childNodes)) {
+    childContent += convertNodeToScrapboxText(child);
+  }
+  return childContent;
 }

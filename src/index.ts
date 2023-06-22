@@ -1,9 +1,9 @@
 import { convertNodeToScrapboxText } from "./convertNodeToScrapboxText";
 
 (async function () {
-  // replace your_user_name to your Scrapbox user name
-  const userName = "your_user_name";
-  const chatGPTName = "ChatGPT";
+  // Edit userName and chatGPTName according to your preference.
+  const userName = "/icons/talker";
+  const chatGPTName = "/icons/ChatGPT";
 
   function getMessageElements(page: Element): Element[] {
     const messageElements = page.querySelectorAll("div.text-base");

@@ -72,7 +72,7 @@ function processListItem(element: Element): string {
   let childContent = "";
   for (const child of Array.from(element.childNodes)) {
     if (child.nodeName === "UL" || child.nodeName === "OL") {
-      childContent += "\n";
+      childContent = childContent.trimEnd() + "\n";
     }
     childContent += convertNodeToScrapboxText(child);
   }

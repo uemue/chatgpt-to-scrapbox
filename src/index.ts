@@ -6,7 +6,7 @@ import { convertNodeToScrapboxText } from "./convertNodeToScrapboxText";
   const chatGPTName = "/icons/ChatGPT";
 
   function getMessageElements(page: Element): Element[] {
-    const messageElements = page.querySelectorAll("div.text-base");
+    const messageElements = page.querySelectorAll("div.flex-1.text-base");
     return Array.from(messageElements);
   }
 

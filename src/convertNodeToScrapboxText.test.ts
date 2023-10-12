@@ -130,8 +130,8 @@ describe("convertNodeToScrapboxText", () => {
     // expected:
     //  1. item1
     //  2. item2
-    //     1. nestedItem1
-    //     2. nestedItem2
+    //   1. nestedItem1
+    //   2. nestedItem2
 
     expect(convertNodeToScrapboxText(node)).toBe(
       " 1. item1\n 2. item2\n  1. nestedItem1\n  2. nestedItem2\n"

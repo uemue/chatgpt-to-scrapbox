@@ -21,7 +21,7 @@ import { convertNodeToScrapboxText } from "./convertNodeToScrapboxText";
       }
 
       const messageContentElement = messageElement.querySelector(
-        ".text-base > div:nth-child(2)"
+        ".text-base > div:nth-child(2) > div:nth-child(2)"
       );
 
       if (!messageContentElement) {
